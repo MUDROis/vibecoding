@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок 1 — Вайб-кодинг</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vibecoding">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+    <!-- общий стиль (переиспользуем переменные и базовые стили) -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* ----- СТИЛИ ДЛЯ ПРЕЗЕНТАЦИИ ----- */
+        :root {
+            --slide-bg: #0a0e27;
+            --text-light: #e8edf3;
+            --text-muted: #a0b3c9;
+            --accent: #00e67a;
+            --accent-blue: #00ccff;
+        }
+
+        /* сброс для слайдов */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--slide-bg);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* контейнер слайдов с вертикальным snap */
+        .slides-wrapper {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+        .slide {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px 40px;
+            box-sizing: border-box;
+            position: relative;
+            background: var(--slide-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        /* внутренний контент слайда */
+        .slide-content {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto;
+            animation: fadeUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .slide.active .slide-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* заголовки */
+        .slide-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+        .slide-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+        .slide-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #c0d0e0;
+        }
+        .slide-text strong {
+            color: #f0f4fa;
+        }
+        .slide-text a:not(.btn-primary):not(.btn-secondary) {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .slide-text ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .slide-text ul li {
+            padding: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #c0d0e0;
+        }
+        .slide-text ul li::before {
+            content: '▹';
+            color: var(--accent-blue);
+        }
+
+        /* пример кода / терминал */
+        .terminal-demo {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(0,255,136,0.15);
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.9rem;
+            min-height: 100px;
+            overflow: hidden;
+        }
+        .terminal-demo .line {
+            color: #b0c4d8;
+            margin: 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .terminal-demo .line .prompt { color: var(--accent); }
+        .terminal-demo .line .cmd { color: #f0f4fa; }
+        .terminal-demo .line .output { color: var(--accent-blue); }
+        .terminal-demo .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .btn-terminal {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            color: var(--accent);
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .btn-terminal:hover {
+            background: var(--accent);
+            color: #0a0e27;
+            box-shadow: 0 0 30px rgba(0,255,136,0.3);
+        }
+
+        /* ----- НАВИГАЦИЯ И ПРОГРЕСС ----- */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            z-index: 1001;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            transition: width 0.3s ease;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+            z-index: 1001;
+            background: rgba(10,12,15,0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .slide-counter span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* индикатор уровня */
+        .level-indicator {
+            position: fixed;
+            top: 20px;
+            left: 30px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(10,12,15,0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 16px 6px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .level-indicator .level-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+        .level-indicator .level-bars {
+            display: flex;
+            gap: 4px;
+        }
+        .level-indicator .level-bars .bar {
+            width: 18px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.15);
+        }
+        .level-indicator .level-bars .bar.filled {
+            background: var(--accent);
+        }
+
+        /* кнопки навигации (стрелки) */
+        .nav-arrows {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            display: flex;
+            gap: 16px;
+            background: rgba(10,12,15,0.6);
+            backdrop-filter: blur(8px);
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .nav-arrows button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px 8px;
+        }
+        .nav-arrows button:hover {
+            color: var(--accent);
+        }
+        .nav-arrows button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* индикатор точек (dots) */
+        .slide-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .slide-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .slide-dots .dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* адаптив */
+        @media (max-width: 768px) {
+            .slide-title { font-size: 1.5rem !important; margin-bottom: 0.5rem; }
+            .slide-content h2 { font-size: 1.2rem !important; margin-bottom: 0.5rem !important; }
+            .slide-subtitle { font-size: 0.85rem !important; margin-bottom: 0.8rem; }
+            .slide-text { font-size: 0.85rem; line-height: 1.6; }
+            .slide-text strong { word-break: break-word; }
+            .slide { padding: 55px 12px 20px; overflow: hidden; }
+            .slide-content { max-height: calc(100vh - 75px); overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+            .slide-content::-webkit-scrollbar { width: 4px; }
+            .slide-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+            .slide-text ul { margin: 0.4rem 0; padding-left: 1.5rem; }
+            .slide-text ul li { padding: 2px 0; display: block; text-indent: 0; }
+            .slide-text ul li::before { display: inline; margin-right: 6px; }
+            .slide-text ol { padding-left: 1rem; line-height: 1.5; }
+            .slide-text p { margin: 0.35rem 0; }
+            .slide-text table { font-size: 0.75rem; }
+            .slide-text th, .slide-text td { padding: 5px 6px; }
+            .level-indicator { top: 8px; left: 8px; padding: 3px 8px; font-size: 0.7rem; }
+            .level-name { display: none; }
+            .slide-counter { top: 8px; right: 8px; font-size: 0.7rem; padding: 3px 8px; }
+            .slide-dots { right: 6px; gap: 5px; }
+            .slide-dots .dot { width: 6px; height: 6px; }
+            .nav-arrows { bottom: 10px; padding: 4px 10px; gap: 8px; }
+            .nav-arrows button { font-size: 1rem; }
+            .terminal-demo { padding: 8px 12px; font-size: 0.75rem; margin: 8px 0; }
+            .highlight-box { padding: 6px 12px; margin: 0.4rem 0; }
+            .btn-done { padding: 10px 20px; font-size: 0.85rem; }
+            .btn-terminal { padding: 8px 18px; font-size: 0.82rem; }
+        }
+        @media (max-width: 480px) {
+            .slide-title { font-size: 1.2rem !important; margin-bottom: 0.3rem; }
+            .slide-content h2 { font-size: 1rem !important; }
+            .slide-text { font-size: 0.8rem; line-height: 1.5; }
+            .slide { padding: 50px 10px 15px; }
+            .slide-content { max-height: calc(100vh - 65px); }
+            .slide-text ul li { padding: 1px 0; }
+            .slide-text p { margin: 0.25rem 0; }
+            .terminal-demo { padding: 6px 10px; font-size: 0.7rem; }
+            .btn-done { padding: 8px 16px; font-size: 0.8rem; }
+            .btn-terminal { padding: 6px 14px; font-size: 0.75rem; }
+            .nav-arrows { bottom: 6px; padding: 3px 8px; gap: 6px; }
+            .nav-arrows button { font-size: 0.9rem; }
+        }
+
+        /* кнопка "Готово" */
+        .btn-done {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #0a0e27;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-done:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+        }
+        .btn-done.done {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        .btn-done.done:hover {
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* спидометр */
+        .speedometer {
+            position: fixed;
+            top: 20px;
+            right: 110px;
+            z-index: 1002;
+            width: 60px;
+            height: 40px;
+        }
+        @media (max-width: 768px) {
+            .speedometer { top: 36px; right: 10px; width: 40px; height: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ПРОГРЕСС ===== -->
+    <div class="progress-bar" id="progressBar">
+        <div class="fill" id="progressFill"></div>
+    </div>
+
+    <!-- ===== ИНДИКАТОР УРОВНЯ ===== -->
+    <div class="level-indicator">
+        <a href="course.html" style="color:var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:6px; font-size:0.85rem; transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'"><i class="fas fa-arrow-left"></i> Все уроки</a>
+        <span style="color:rgba(255,255,255,0.15); margin:0 4px;">|</span>
+        <span class="level-label">Уровень</span>
+        <div class="level-bars">
+            <span class="bar filled"></span>
+            <span class="bar filled"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <span class="level-name" style="color:var(--accent); font-size:0.8rem; font-weight:600; margin-left:2px;">Начальный</span>
+    </div>
+
+    <!-- ===== СПИДОМЕТР ===== -->
+    <div class="speedometer" id="speedometer">
+        <svg viewBox="0 0 100 60" width="100%" height="100%">
+            <!-- Фон дуги -->
+            <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8" stroke-linecap="round"/>
+            <!-- Прогресс дуги -->
+            <path id="speedArc" d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="#00ff88" stroke-width="8" stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66"/>
+            <!-- Центральная точка -->
+            <circle cx="50" cy="55" r="3" fill="#00ff88"/>
+            <!-- Стрелка -->
+            <line id="speedNeedle" x1="50" y1="55" x2="50" y2="20" stroke="#00ff88" stroke-width="2" stroke-linecap="round" transform="rotate(-90, 50, 55)"/>
+            <!-- Текст процента -->
+            <text id="speedText" x="50" y="48" text-anchor="middle" fill="#00ff88" font-family="Space Grotesk, monospace" font-size="14" font-weight="700">0%</text>
+        </svg>
+    </div>
+
+    <!-- ===== СЧЁТЧИК ===== -->
+    <div class="slide-counter" id="slideCounter">0 / <span id="totalSlides">10</span></div>
+
+    <!-- ===== ТОЧКИ НАВИГАЦИИ ===== -->
+    <div class="slide-dots" id="slideDots"></div>
+
+    <!-- ===== ОСНОВНАЯ ОБЁРТКА СЛАЙДОВ ===== -->
+    <div class="slides-wrapper" id="slidesWrapper">
+
+        <!-- СЛАЙД 1: ТИТУЛ -->
+        <section class="slide" data-index="0">
+            <div class="slide-content">
+                <div style="display:flex; flex-direction:column; align-items:center; text-align:center; padding-top:2rem;">
+                    <h1 class="slide-title" style="font-size:3.5rem;">Урок 1</h1>
+                    <h2 style="font-family:'Space Grotesk',sans-serif; font-size:2.2rem; margin-bottom:1rem; color:#f0f4fa;">Что такое вайбкодинг<br>и как он меняет создание сайтов</h2>
+                    <p class="slide-subtitle" style="max-width:600px; margin:0 auto 2rem;">Практический урок для начинающих. Вы создадите свой первый сайт, не написав ни строчки кода вручную.</p>
+                    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; font-size:0.95rem; color:var(--text-muted);">
+                        <span><i class="fas fa-clock" style="color:var(--accent);"></i> 2 часа</span>
+                        <span><i class="fas fa-signal" style="color:var(--accent);"></i> Начальный</span>
+                    </div>
+                    <div style="margin-top:2.5rem;">
+                        <button class="btn-primary" onclick="goToSlide(1)">Начать урок <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 2: ЦЕЛИ -->
+        <section class="slide" data-index="1">
+            <div class="slide-content">
+                <h2 class="slide-title">Цели урока</h2>
+                <div class="slide-text">
+                    <p>После этого урока вы:</p>
+                    <ul>
+                        <li>Поймёте суть <strong>вайбкодинга</strong> и его преимущества.</li>
+                        <li>Зарегистрируете аккаунт на <strong>GitHub</strong> и настроите <strong>GitHub Pages</strong>.</li>
+                        <li>Установите <strong>VS Code</strong> и расширение <strong>Live Server</strong>.</li>
+                        <li>Напишете свой первый <strong>промпт</strong> в нейросети <strong>DeepSeek</strong>.</li>
+                        <li>Создадите и опубликуете <strong>первую веб-страницу</strong> в интернете.</li>
+                        <li>Научитесь основам работы с <strong>Git</strong> (commit, push) через VS Code.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 3: ТЕОРИЯ — ЧТО ТАКОЕ ВАЙБКОДИНГ -->
+        <section class="slide" data-index="2">
+            <div class="slide-content">
+                <h2 class="slide-title">Что такое вайбкодинг?</h2>
+                <div class="slide-text">
+                    <p><strong>Вайбкодинг (vibe coding)</strong> — это подход, при котором вы <strong>не пишете код вручную</strong>, а описываете словами то, что хотите получить, а нейросеть генерирует готовый код.</p>
+                    <p><strong>Аналогия:</strong> вы заказываете пиццу — говорите, какую хотите, и вам приносят готовую. Здесь то же самое: вы говорите нейросети: «Сделай страницу с моим именем», и она выдаёт готовый HTML.</p>
+                    <p><strong>Почему это работает?</strong></p>
+                    <ul>
+                        <li>Нейросети обучены на миллионах примеров кода.</li>
+                        <li>Они понимают естественный язык (русский, английский).</li>
+                        <li>Вы можете уточнять и дорабатывать результат в диалоге.</li>
+                    </ul>
+                    <p><strong>Где применяется?</strong> Создание лендингов, прототипов, автоматизация задач, быстрый запуск сайтов для школ и бизнеса.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 4: ИНСТРУМЕНТЫ -->
+        <section class="slide" data-index="3">
+            <div class="slide-content">
+                <h2 class="slide-title">Инструменты</h2>
+                <div class="slide-text">
+                    <p>Мы будем использовать только бесплатные сервисы:</p>
+                    <ul>
+                        <li><a href="https://github.com/" target="_blank">GitHub</a> — хранение кода и публикация сайтов (GitHub Pages).</li>
+                        <li><a href="https://code.visualstudio.com/" target="_blank">VS Code</a> — редактор кода с расширениями.</li>
+                        <li><strong>Live Server</strong> — расширение для мгновенного предпросмотра.</li>
+                        <li><a href="https://chat.deepseek.com/" target="_blank">DeepSeek</a> — бесплатная нейросеть для генерации кода.</li>
+                        <li><strong>Встроенный Git</strong> в VS Code — для управления версиями.</li>
+                    </ul>
+                    <p style="margin-top:1rem;">Всё это доступно бесплатно и работает в браузере.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 5: ШАГ 1 — РЕГИСТРАЦИЯ GITHUB -->
+        <section class="slide" data-index="4">
+            <div class="slide-content">
+                <h2 class="slide-title">Шаг 1. Регистрация на GitHub</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li>Перейдите на <a href="https://github.com/" target="_blank">github.com</a> и нажмите <strong>Sign up</strong>.</li>
+                        <li>Введите <strong>Email</strong>, <strong>Password</strong> и <strong>Username</strong> (он будет частью адреса вашего сайта, например, <code>ваш_логин.github.io</code>).</li>
+                        <li>Пройдите капчу и нажмите <strong>Create account</strong>.</li>
+                        <li>Подтвердите email, перейдя по ссылке из письма.</li>
+                    </ol>
+                    <p style="margin-top:1rem;"><strong>Важно:</strong> запомните логин и пароль — они понадобятся на каждом занятии.</p>
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-done" data-step="1">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 6: ШАГ 2 — УСТАНОВКА VS CODE И LIVE SERVER -->
+        <section class="slide" data-index="5">
+            <div class="slide-content">
+                <h2 class="slide-title">Шаг 2. Установка VS Code и Live Server</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li>Скачайте VS Code с <a href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a> и установите (обязательно отметьте «Добавить в PATH»).</li>
+                        <li>Запустите VS Code, откройте вкладку <strong>Extensions</strong> (Ctrl+Shift+X).</li>
+                        <li>Найдите расширение <strong>Live Server</strong> от Ritwick Dey и установите его.</li>
+                        <li>Создайте на рабочем столе папку <code>my-first-site</code> и откройте её в VS Code (<strong>File → Open Folder</strong>).</li>
+                        <li>Внутри папки создайте файл <code>index.html</code> (правой кнопкой → New File).</li>
+                    </ol>
+                    <p style="margin-top:1rem;">Пока не пишем код — просто проверяем, что всё работает.</p>
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-done" data-step="2">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 7: ШАГ 3 — ПЕРВЫЙ ПРОМПТ В DEEPSEEK -->
+        <section class="slide" data-index="6">
+            <div class="slide-content">
+                <h2 class="slide-title">Шаг 3. Первый промпт в DeepSeek</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li>Перейдите на <a href="https://chat.deepseek.com/" target="_blank">chat.deepseek.com</a> и зарегистрируйтесь.</li>
+                        <li>Вставьте в чат такой промпт (можно скопировать):</li>
+                    </ol>
+                    <div style="background:rgba(15, 23, 42, 0.9); border-radius:12px; padding:16px; margin:12px 0; border-left:4px solid var(--accent);">
+                        <p style="font-style:italic; color:#b0c4d8;">«Ты разработчик сайтов-визиток, специализируешься на создании сайтов для веб-дизайнеров. Твоя задача — сделать сайт-портфолио для начинающего специалиста. Изучи подобные сайты в сети и предложи варианты по содержанию и визуалу. Сначала составь план. Задавай уточняющие вопросы. Пиши простым языком, я не программист. Я буду разворачивать сайт на GitHub Pages.»</p>
+                    </div>
+                    <p>DeepSeek предложит структуру, затем вы сможете попросить её сгенерировать готовый HTML-код. Скопируйте полученный код.</p>
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-done" data-step="3">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 8: ШАГ 4 — СОЗДАНИЕ СТРАНИЦЫ И ЗАПУСК (С ТЕРМИНАЛОМ) -->
+        <section class="slide" data-index="7">
+            <div class="slide-content">
+                <h2 class="slide-title">Шаг 4. Создание страницы и запуск</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li>В VS Code откройте файл <code>index.html</code>, вставьте скопированный код.</li>
+                        <li>Сохраните файл (<kbd>Ctrl+S</kbd>).</li>
+                        <li>Нажмите <strong>Go Live</strong> в правом нижнем углу VS Code — откроется браузер с вашей страницей.</li>
+                        <li>Поменяйте текст, цвета, сохраните — страница обновится автоматически.</li>
+                    </ol>
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-done" data-step="4">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 9: ШАГ 5 — ПУБЛИКАЦИЯ НА GITHUB PAGES -->
+        <section class="slide" data-index="8">
+            <div class="slide-content">
+                <h2 class="slide-title">Шаг 5. Публикация на GitHub Pages</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li>В VS Code авторизуйтесь в GitHub (шестерёнка → Sign in).</li>
+                        <li>Инициализируйте Git: <kbd>Ctrl+Shift+P</kbd> → «Git: Initialize Repository».</li>
+                        <li>В панели Source Control добавьте файлы (знак +), напишите коммит «Первый коммит» и нажмите галочку.</li>
+                        <li>Нажмите <strong>Publish to GitHub</strong> (выберите Public).</li>
+                        <li>На GitHub перейдите в репозиторий → Settings → Pages, выберите ветку <strong>main</strong> и папку <strong>/(root)</strong>, сохраните.</li>
+                        <li>Через 1–2 минуты ваш сайт будет доступен по ссылке <code>https://ваш_логин.github.io/my-first-site/</code>.</li>
+                    </ol>
+                    <p style="margin-top:1rem;">Поздравляю! Ваш первый сайт опубликован.</p>
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-done" data-step="5">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 10: ДОМАШНЕЕ ЗАДАНИЕ И ЧЕК-ЛИСТ -->
+        <section class="slide" data-index="9">
+            <div class="slide-content">
+                <h2 class="slide-title">Домашнее задание</h2>
+                <div class="slide-text">
+                    <ol style="list-style:decimal; padding-left:1.5rem; color:#c0d0e0; line-height:1.9;">
+                        <li><strong>Измените страницу</strong> под себя (имя, хобби, цвета).</li>
+                        <li>Спросите у DeepSeek, как добавить блок «Мои контакты» и вставьте его.</li>
+                        <li><strong>Закоммитьте и запушьте</strong> изменения через VS Code.</li>
+                        <li><strong>Проверьте</strong>, что изменения отобразились на сайте (через 2–3 минуты).</li>
+                        <li><strong>Пришлите ссылку</strong> на ваш сайт в чат группы.</li>
+                    </ol>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙД 11: ИТОГ И ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ -->
+        <section class="slide" data-index="10">
+            <div class="slide-content">
+                <h2 class="slide-title">Итог урока</h2>
+                <div class="slide-text">
+                    <p><strong>Что мы узнали?</strong></p>
+                    <ul>
+                        <li>Что такое вайбкодинг и как он работает.</li>
+                        <li>Как регистрироваться на GitHub и пользоваться VS Code.</li>
+                        <li>Как общаться с нейросетью на примере DeepSeek.</li>
+                        <li>Как создать веб-страницу и опубликовать её в интернете бесплатно.</li>
+                        <li>Как использовать встроенный Git в VS Code.</li>
+                    </ul>
+                    <p style="margin-top:1.5rem;"><strong>Главный итог:</strong> вы создали свой первый сайт, не написав ни строчки кода вручную — только словами описали, что нужно. Это и есть вайбкодинг!</p>
+                    <div style="margin-top:2rem; display:flex; gap:16px; flex-wrap:wrap;">
+                        <a href="course.html" class="btn-primary" style="color:#000 !important;">Все уроки</a>
+                        <a href="https://vk.me/join/0/XQjk0MIMx2NBuQ6bsG_a84BDCyUwJGnq8=" target="_blank" class="btn-secondary">Поделиться результатом</a>
+                        <a href="lesson2.html" class="btn-primary" style="color:#000 !important;">Следующий урок <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <p style="margin-top:2rem; font-size:0.9rem; color:var(--text-muted);">
+                        <i class="fas fa-book-open"></i> Дополнительные материалы: <a href="prompts.md" style="color:var(--accent);">prompts.md</a>, <a href="checklists.md" style="color:var(--accent);">checklists.md</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /slides-wrapper -->
+
+    <!-- ===== НАВИГАЦИОННЫЕ СТРЕЛКИ ===== -->
+    <div class="nav-arrows">
+        <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+        <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- ===== СКРИПТЫ ===== -->
+    <script>
+        (function() {
+            const wrapper = document.getElementById('slidesWrapper');
+            const slides = document.querySelectorAll('.slide');
+            const total = slides.length;
+            document.getElementById('totalSlides').textContent = total;
+
+            const progressFill = document.getElementById('progressFill');
+            const slideCounter = document.getElementById('slideCounter');
+            const dotsContainer = document.getElementById('slideDots');
+
+            // Создаём точки
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            });
+
+            const dots = dotsContainer.querySelectorAll('.dot');
+            let currentIndex = 0;
+            let isScrolling = false;
+
+            // Функция перехода к слайду
+            window.goToSlide = function(index) {
+                if (index < 0) index = 0;
+                if (index >= total) index = total - 1;
+                const slide = slides[index];
+                if (slide) {
+                    slide.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            // Обновление состояния
+            function updateProgress(index) {
+                const percent = Math.round(((index + 1) / total) * 100);
+                progressFill.style.width = percent + '%';
+                slideCounter.innerHTML = (index + 1) + ' / <span>' + total + '</span>';
+
+                // Активная точка
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+
+                // Кнопки
+                document.getElementById('prevBtn').disabled = (index === 0);
+                document.getElementById('nextBtn').disabled = (index === total - 1);
+
+                // Активируем слайд для анимации
+                slides.forEach((s, i) => {
+                    s.classList.toggle('active', i === index);
+                });
+            }
+
+            // Отслеживаем видимый слайд при прокрутке
+            const observer = new IntersectionObserver((entries) => {
+                if (isScrolling) return;
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const idx = parseInt(entry.target.dataset.index);
+                        if (!isNaN(idx) && idx !== currentIndex) {
+                            currentIndex = idx;
+                            updateProgress(currentIndex);
+                        }
+                    }
+                });
+            }, {
+                root: wrapper,
+                threshold: 0.5
+            });
+
+            slides.forEach(slide => observer.observe(slide));
+
+            // Обработчики кнопок
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                if (currentIndex > 0) goToSlide(currentIndex - 1);
+            });
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                if (currentIndex < total - 1) goToSlide(currentIndex + 1);
+            });
+
+            // Инициализация
+            updateProgress(0);
+
+            // Демонстрация терминала
+            window.runTerminalDemo = function(containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const lines = [
+                    { prompt: '$', cmd: 'git status', output: 'On branch main\nnothing to commit, working tree clean' },
+                    { prompt: '$', cmd: 'echo "Hello Vibe!"', output: 'Hello Vibe!' },
+                    { prompt: '$', cmd: 'ls -la', output: 'total 8\ndrwxr-xr-x  3 user  staff  96 ...' },
+                    { prompt: '$', cmd: 'code .', output: 'Opening VS Code...' }
+                ];
+                container.innerHTML = '';
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i >= lines.length) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    const line = lines[i];
+                    const div = document.createElement('div');
+                    div.className = 'line';
+                    div.innerHTML = `<span class="prompt">${line.prompt}</span> <span class="cmd">${line.cmd}</span>`;
+                    container.appendChild(div);
+                    if (line.output) {
+                        const outDiv = document.createElement('div');
+                        outDiv.className = 'line';
+                        outDiv.innerHTML = `<span class="output">${line.output}</span>`;
+                        container.appendChild(outDiv);
+                    }
+                    if (i === lines.length - 1) {
+                        const cursorSpan = document.createElement('span');
+                        cursorSpan.className = 'cursor';
+                        container.appendChild(cursorSpan);
+                    }
+                    i++;
+                }, 700);
+            };
+
+            // Кнопки "Готово": подсчёт процента выполнения
+            const doneButtons = document.querySelectorAll('.btn-done');
+            const totalSteps = doneButtons.length;
+            const speedArc = document.getElementById('speedArc');
+            const speedNeedle = document.getElementById('speedNeedle');
+            const speedText = document.getElementById('speedText');
+            const arcLength = 125.66;
+
+            function updateSpeedometer(pct) {
+                const offset = arcLength - (arcLength * pct / 100);
+                speedArc.setAttribute('stroke-dashoffset', offset);
+                const angle = -90 + (180 * pct / 100);
+                speedNeedle.setAttribute('transform', `rotate(${angle}, 50, 55)`);
+                speedText.textContent = pct + '%';
+            }
+
+            function updateCompletion() {
+                let done = 0;
+                doneButtons.forEach(btn => { if (btn.classList.contains('done')) done++; });
+                const pct = totalSteps ? Math.round((done / totalSteps) * 100) : 0;
+                updateSpeedometer(pct);
+            }
+
+            function saveButtons() {
+                const user = Auth.getCurrentUser();
+                if (!user) return;
+                const state = [];
+                doneButtons.forEach(btn => state.push(btn.classList.contains('done')));
+                const doneCount = state.filter(Boolean).length;
+                const score = totalSteps ? Math.round((doneCount / totalSteps) * 100) : 0;
+                const userRef = FirestoreDB.db.collection('users').doc(user.uid);
+                userRef.get().then(doc => {
+                    if (!doc.exists) return;
+                    const progress = doc.data().progress || {};
+                    progress.lesson1 = { completed: state, score: score, lastStep: doneCount };
+                    return userRef.update({ progress });
+                }).catch(() => {});
+            }
+
+            async function loadButtons() {
+                const user = Auth.getCurrentUser();
+                if (user) {
+                    try {
+                        const progress = await FirestoreDB.getProgress(user.uid, 'lesson1');
+                        if (progress && Array.isArray(progress.completed) && progress.completed.length === doneButtons.length) {
+                            doneButtons.forEach((btn, i) => {
+                                if (progress.completed[i]) {
+                                    btn.classList.add('done');
+                                    btn.textContent = 'Готово ✓';
+                                }
+                            });
+                        }
+                    } catch(e) {}
+                }
+                updateCompletion();
+            }
+
+            doneButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!btn.classList.contains('done')) {
+                        btn.classList.add('done');
+                        btn.textContent = 'Готово ✓';
+                    } else {
+                        btn.classList.remove('done');
+                        btn.textContent = 'Готово';
+                    }
+                    saveButtons();
+                    updateCompletion();
+                });
+            });
+
+            window._loadLesson1Progress = loadButtons;
+        })();
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firestore.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      Auth.whenReady().then(() => {
+        Auth.canAccessLesson(1).then(access => {
+          if (!access) { window.location.href = 'index.html'; return; }
+          if (window._loadLesson1Progress) window._loadLesson1Progress();
+        });
+      });
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+</html>

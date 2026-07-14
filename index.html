@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вайб-кодинг — курс по созданию сайтов с AI</title>
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vibecoding">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+    <!-- Общие стили -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo" style="height:32px; vertical-align:middle; margin-right:8px;" /> <i class="fas fa-code"></i> <span class="logo-text">Vibecoding</span>
+            </a>
+            <nav id="mainNav">
+                <a href="index.html#benefits">О курсе</a>
+                <a href="index.html#program">Программа</a>
+                <a href="index.html#access">Цены</a>
+                <a href="index.html#author">Об авторе</a>
+                <a href="index.html#faq">FAQ</a>
+                <a href="#footer">Контакты</a>
+                <a href="course.html" class="nav-cta" onclick="return Auth.handleLessonClick(event, 'course.html')">Начать путь</a>
+            </nav>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <canvas id="particlesCanvas"></canvas>
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    Создай свой первый сайт,<br>
+                    <span class="highlight">не написав ни строчки кода</span>
+                </h1>
+                <p>
+                    Практический курс по вайб-кодингу <strong>для преподавателей, предпринимателей и фрилансеров</strong>.<br>
+                    Превращаем идеи в работающие продукты с помощью AI за 3 недели.
+                </p>
+                <div class="hero-actions">
+                    <a href="course.html" class="btn-primary" onclick="return Auth.handleLessonClick(event, 'course.html')">Начать путь</a>
+                    <a href="https://checkout.tochka.com/5e9539cc-819d-4a9c-9381-10e3a5d63768" target="_blank" class="btn-secondary">Купить</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="number" data-count="3">0</span>
+                        <span class="label">Недели</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number" data-count="9">0</span>
+                        <span class="label">Уроков</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number" data-count="100">0</span>
+                        <span class="label">% практики</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="terminal-window" id="heroTerminal">
+                    <div class="terminal-bar">
+                        <span class="red"></span>
+                        <span class="yellow"></span>
+                        <span class="green"></span>
+                    </div>
+                    <div class="terminal-body">
+                        <!-- строки будут добавлены скриптом -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BENEFITS ==================== -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title fade-up">Почему этот курс?</h2>
+            <p class="section-subtitle fade-up">Мы даём суперсилу создавать цифровые продукты без кода.</p>
+            <div class="benefits-grid">
+                <div class="benefit-item glass-card fade-up">
+                    <div class="icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Практика с первого дня</h3>
+                    <p>На первом же уроке вы создадите и опубликуете работающую веб-страницу. Никакой скучной теории.</p>
+                </div>
+                <div class="benefit-item glass-card fade-up">
+                    <div class="icon"><i class="fas fa-gem"></i></div>
+                    <h3>Бесплатные инструменты</h3>
+                    <p>Все инструменты — GitHub, VS Code, DeepSeek, Supabase — имеют бесплатные тарифы. Никаких дополнительных вложений на ПО.</p>
+                </div>
+                <div class="benefit-item glass-card fade-up">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <h3>Поддержка в чате</h3>
+                    <p>Вы не одни. Вопросы можно задать в чате ВКонтакте — преподаватель и другие ученики помогут.</p>
+                </div>
+            </div>
+            <div class="benefits-license fade-up">
+                <a href="https://obrnadzor.gov.ru/gosudarstvennye-uslugi-i-funkczii/gosudarstvennye-uslugi/liczenzirovanie-obrazovatelnoj-deyatelnosti/svodnyj-reestr-liczenzij/" target="_blank" class="hero-license-badge">
+                    <i class="fas fa-shield-alt"></i> Лицензия № Л035-01218-23/01091451
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PROGRAM ==================== -->
+    <section class="program" id="program">
+        <div class="container">
+            <h2 class="section-title fade-up">Программа курса</h2>
+            <p class="section-subtitle fade-up">3 недели, 9 уроков — от идеи до сайта в интернете.</p>
+            <div class="timeline">
+                <div class="timeline-item fade-up">
+                    <div class="timeline-content">
+                        <div class="week">Неделя 1</div>
+                        <div class="desc">
+                            <strong>Знакомство и первый продукт</strong><br>
+                            Регистрация GitHub, установка VS Code, первый промпт в DeepSeek, создание и публикация лендинга.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item fade-up">
+                    <div class="timeline-content">
+                        <div class="week">Неделя 2</div>
+                        <div class="desc">
+                            <strong>Данные и автоматизация</strong><br>
+                            Подключение Supabase (база данных), работа с Git (ветки, бэкап), автоматический деплой через GitHub Actions.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item fade-up">
+                    <div class="timeline-content">
+                        <div class="week">Неделя 3</div>
+                        <div class="desc">
+                            <strong>Завершение, безопасность и запуск</strong><br>
+                            Тестирование, SEO, SSL, политика конфиденциальности, финальная презентация проектов.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="course.html" class="btn-primary" onclick="return Auth.handleLessonClick(event, 'course.html')">Перейти к урокам</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== AUTHOR ==================== -->
+    <section class="author" id="author">
+        <div class="container">
+            <div class="author-wrapper fade-up">
+                <div class="author-photo-col">
+                    <img src="author.png" alt="Анна Громова" class="author-photo">
+                </div>
+                <div class="author-info">
+                    <h3>От языков к коду: как методист и разработчик создаёт курсы, в которые влюбляются ученики</h3>
+                    <span class="role">Анна Громова — основатель, методист и EdTech-разработчик</span>
+                    <p>
+                        Приветствую! Я — <span class="key-word">Анна Громова</span>. Мой путь начался с языков, но привёл меня в <span class="key-word">EdTech</span> — образовательные технологии. Будучи полиглотом и преподавателем, я поняла главное: ученик запоминает не то, что прочитал, а то, что прожил в действии. Именно этот принцип лёг в основу моей методики.
+                    </p>
+                    <p>
+                        В 2019 году я основала <span class="key-word">Интерактивную школу МУДРО</span>. Мне всегда мало просто «учить», не хватало инструмента, который бы позволял не зубрить, а сразу применять язык в диалоге. Так родилась идея создать собственные интерактивные тренажёры.
+                    </p>
+                    <p>
+                        С тех пор моя главная страсть — разрабатывать методики и цифровые продукты, которые делают обучение увлекательным и эффективным. Я не просто преподаю — а проектирую <span class="key-word">образовательные экосистемы</span>: от сценариев уроков до полноценных веб-приложений для тренировки навыков.
+                    </p>
+                    <p>
+                        Мой подход — <span class="key-word">методист-разработчик</span>: я продумываю, как ученик будет взаимодействовать с материалом, а затем создаю цифровую среду, где это взаимодействие происходит естественно и с удовольствием. Именно поэтому я увлеклась вайб-кодингом — возможностью быстро превращать методические идеи в работающие продукты без необходимости писать код вручную. Это даёт мне суперсилу: я могу тестировать гипотезы, создавать прототипы и дорабатывать их в реальном времени, опираясь на обратную связь учеников.
+                    </p>
+                    <div class="author-social">
+                        <a href="https://max.ru/u/f9LHodD0cOIPek6qIITYZEITO13FJumsVz_W6HTqLpf9kwy8niaWUtgRRHk" target="_blank"><i class="fas fa-comment-dots"></i></a>
+                        <a href="https://vk.com/interactive.school.mudro" target="_blank"><i class="fab fa-vk"></i></a>
+                    </div>
+                </div>
+                <div class="author-achievements">
+                    <div class="achievement-list">
+                        <div class="achievement-card">
+                            Основатель Интерактивной школы МУДРО
+                            <span class="ach-sub">с официальной лицензией</span>
+                        </div>
+                        <div class="achievement-card">
+                            Переводчик и преподаватель международного уровня
+                            <span class="ach-sub">с 20-летним опытом, применяю лучшие методики</span>
+                        </div>
+                        <div class="achievement-card">
+                            Полиглот
+                            <span class="ach-sub">говорю на 4 иностранных языках</span>
+                        </div>
+                        <div class="achievement-card">
+                            Методист с 8-летним стажем
+                            <span class="ach-sub">разработала более 15 курсов</span>
+                        </div>
+                        <div class="achievement-card">
+                            EdTech-разработчик
+                            <span class="ach-sub">создаю интерактивные тренажёры, игры и веб-приложения</span>
+                        </div>
+                        <div class="achievement-card">
+                            Опыт управления проектами
+                            <span class="ach-sub">от идеи до релиза</span>
+                        </div>
+                        <div class="achievement-card">
+                            Мама двоих детей
+                            <span class="ach-sub">знаю, как удерживать внимание и адаптировать сложное к разным возрастам</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HOW TO GET ACCESS ==================== -->
+    <section class="access-section" id="access">
+        <div class="container">
+            <h2 class="section-title fade-up">Как получить доступ</h2>
+            <p class="section-subtitle fade-up">Оплата и доступ к курсу</p>
+            <div class="access-steps">
+                <div class="access-step glass-card fade-up">
+                    <div class="step-number">1</div>
+                    <h3>Нажмите «Купить»</h3>
+                    <p>Перейдите на страницу оплаты.</p>
+                </div>
+                <div class="access-step glass-card fade-up">
+                    <div class="step-number">2</div>
+                    <h3>Укажите email</h3>
+                    <p>На него придёт персональный код для входа.</p>
+                </div>
+                <div class="access-step glass-card fade-up">
+                    <div class="step-number">3</div>
+                    <h3>Оплатите</h3>
+                    <p>Банковской картой или через СБП.</p>
+                </div>
+                <div class="access-step glass-card fade-up">
+                    <div class="step-number">4</div>
+                    <h3>Получите код</h3>
+                    <p>Письмо с кодом доступа придёт на вашу почту.</p>
+                </div>
+                <div class="access-step glass-card fade-up">
+                    <div class="step-number">5</div>
+                    <h3>Начните обучение</h3>
+                    <p>Введите код на платформе и учитесь.</p>
+                </div>
+            </div>
+            <p class="access-note fade-up">Доступ предоставляется сразу после оплаты. Если письмо не пришло — проверьте папку «Спам».</p>
+            <div class="pricing-grid fade-up">
+                <div class="pricing-card glass-card">
+                    <h3>Поурочный доступ</h3>
+                    <div class="pricing-price">1 500 ₽ <span class="pricing-per">/ урок</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Оплата за 1 урок из курса</li>
+                        <li><i class="fas fa-check"></i> Доступ на 3 месяца</li>
+                    </ul>
+                    <a href="https://checkout.tochka.com/08be0165-a0f8-4f92-a44e-e84211a6219f" target="_blank" class="btn-secondary">Купить</a>
+                </div>
+                <div class="pricing-card pricing-card--featured glass-card">
+                    <div class="pricing-badge">Выгодно</div>
+                    <h3>Полный курс</h3>
+                    <div class="pricing-price">9 000 ₽</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 9 уроков — весь курс</li>
+                        <li><i class="fas fa-check"></i> Учитесь в своём темпе</li>
+                        <li><i class="fas fa-check"></i> Доступ к курсу на 1 год</li>
+                        <li><i class="fas fa-check"></i> 3 готовых проекта: сайт-визитка, трекер задач, лендинг для бизнеса</li>
+                        <li><i class="fas fa-check"></i> Экономия 4 500 ₽</li>
+                    </ul>
+                    <a href="https://checkout.tochka.com/5e9539cc-819d-4a9c-9381-10e3a5d63768" target="_blank" class="btn-primary">Купить</a>
+                </div>
+                <div class="pricing-card glass-card">
+                    <div class="pricing-badge" style="background:#00ccff;">Бонус</div>
+                    <h3>Бонусный модуль</h3>
+                    <div class="pricing-price">5 000 ₽</div>
+                    <p style="color:#a0b3c9; font-size:0.9rem; margin-bottom:16px; text-align:left;">Чему вы научитесь:</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Превращать сайт в мобильное приложение (PWA)</li>
+                        <li><i class="fas fa-check"></i> Создавать Telegram-бота для мгновенных уведомлений</li>
+                        <li><i class="fas fa-check"></i> Подключать приём платежей</li>
+                        <li><i class="fas fa-check"></i> Упаковывать сайт в Docker и разворачивать на любом сервере</li>
+                        <li><i class="fas fa-check"></i> Монетизировать свои проекты — от идеи до первого платежа</li>
+                    </ul>
+                    <a href="https://checkout.tochka.com/f1420b10-3b75-4d99-865c-1aed4be07724" target="_blank" class="btn-secondary">Купить</a>
+                </div>
+            </div>
+            <p class="access-guarantee fade-up"><i class="fas fa-shield-alt"></i> Гарантия: 14 дней на возврат, если пройдено не более 20% уроков.</p>
+        </div>
+    </section>
+
+    <!-- ==================== YOUR ADVANTAGES ==================== -->
+    <section class="payment-methods" id="payment">
+        <div class="container">
+            <h2 class="section-title fade-up">Ваши преимущества</h2>
+            <div class="payment-grid">
+                <div class="payment-card glass-card fade-up">
+                    <div class="payment-icon"><i class="fas fa-baby"></i></div>
+                    <h3>Оплата материнским капиталом</h3>
+                    <p>Интерактивная школа МУДРО имеет образовательную лицензию, что позволяет использовать средства материнского капитала на обучение. Для оформления обратитесь в бухгалтерию школы — мы подготовим все необходимые документы.</p>
+                </div>
+                <div class="payment-card glass-card fade-up">
+                    <div class="payment-icon"><i class="fas fa-receipt"></i></div>
+                    <h3>Налоговый вычет 13%</h3>
+                    <p>Вы можете вернуть 13% от стоимости курса, оформив налоговый вычет. Для этого запросите справку об оплате курса у администрации школы и подайте заявление на госуслугах.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FAQ ==================== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title fade-up">Часто задаваемые вопросы</h2>
+            <div class="faq-list">
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Нужно ли уметь программировать?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Нет. Курс рассчитан на людей без технического образования. Всё, что нужно — уверенно пользоваться компьютером и интернетом.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Сколько это стоит?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Стоимость курса — 9 000 рублей. В разработке мы используем только бесплатные версии инструментов (GitHub, VS Code, DeepSeek, Supabase). Никаких скрытых платежей.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Что я создам в итоге?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Вы разработаете 3 готовых проекта: сайт-визитку, трекер задач и полноценный лендинг для своей школы, бренда или проекта — опубликуете его в интернете, подключите базу данных для заявок, настроите автоматический деплой и SEO — и получите сертификат.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Как проходит обучение?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Это пилотный поток — живые вебинары 3 раза в неделю по 2 часа. Записи будут доступны. В чате ВКонтакте вы можете задавать вопросы и общаться с другими учениками.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Как оплатить курс?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Нажмите кнопку «Купить» и перейдите на страницу оплаты. Укажите email, выберите способ оплаты (банковская карта или СБП) и завершите оплату. После оплаты на указанный email придёт персональный код доступа к курсу.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Когда я получу доступ к курсу?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Доступ предоставляется сразу после оплаты. Письмо с кодом доступа приходит на указанный email в течение нескольких минут. Если письмо не пришло — проверьте папку «Спам».
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Можно ли вернуть деньги?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Да, у вас 14 дней на возврат, если пройдено не более 20% уроков. Обратитесь в бухгалтерию школы для оформления возврата.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Можно ли оплатить материнским капиталом?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Да. Интерактивная школа МУДРО имеет образовательную лицензию, что позволяет использовать средства материнского капитала на обучение. Для оформления обратитесь в бухгалтерию школы — мы подготовим все необходимые документы.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Можно ли получить налоговый вычет?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Да, вы можете вернуть 13% от стоимости курса, оформив налоговый вычет. Для этого запросите справку об оплате курса у администрации школы и подайте заявление на госуслугах. Школа имеет лицензию — это обязательное условие для получения вычета.
+                    </div>
+                </div>
+                <div class="faq-item fade-up">
+                    <div class="question">
+                        <span>Какие способы оплаты доступны?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="answer">
+                        Оплата банковской картой (Visa, MasterCard, МИР) или через СБП (Система Быстрых Платежей). Также доступна оплата материнским капиталом через бухгалтерию школы.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INSTALL APP ==================== -->
+    <section class="install-app" id="install-app">
+        <div class="container">
+            <h2 class="section-title fade-up">Как установить приложение курса</h2>
+            <p class="section-subtitle fade-up">Установите приложение прямо из браузера — оно работает как PWA (Progressive Web App) и не требует скачивания из магазинов.</p>
+            <div class="install-grid">
+                <div class="install-card glass-card fade-up">
+                    <div class="install-icon"><i class="fab fa-android"></i></div>
+                    <h3>Android</h3>
+                    <ol class="install-steps">
+                        <li>Откройте сайт в <strong>Chrome</strong></li>
+                        <li>Нажмите <strong>три точки</strong> → «Установить приложение»</li>
+                        <li>Подтвердите установку</li>
+                    </ol>
+                </div>
+                <div class="install-card glass-card fade-up">
+                    <div class="install-icon"><i class="fab fa-apple"></i></div>
+                    <h3>iPhone / iPad</h3>
+                    <ol class="install-steps">
+                        <li>Откройте сайт в <strong>Safari</strong></li>
+                        <li>Нажмите <strong>«Поделиться»</strong> ↓</li>
+                        <li>Выберите «На экран Домой»</li>
+                    </ol>
+                </div>
+                <div class="install-card glass-card fade-up">
+                    <div class="install-icon"><i class="fas fa-desktop"></i></div>
+                    <h3>Компьютер</h3>
+                    <ol class="install-steps">
+                        <li>Откройте сайт в <strong>Chrome</strong> или <strong>Edge</strong></li>
+                        <li>Нажмите <strong>иконку установки</strong> в адресной строке</li>
+                        <li>Выберите «Установить»</li>
+                    </ol>
+                </div>
+            </div>
+            <p class="install-note fade-up">После установки иконка приложения появится на главном экране — открывайте курс как обычное приложение с быстрой загрузкой.</p>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-col">
+                <div class="footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="index.html#program">Программа</a>
+                <a href="course.html" onclick="return Auth.handleLessonClick(event, 'course.html')">Уроки</a>
+                    <a href="wiki.html">Вики курса</a>
+                    <a href="index.html#author">Об авторе</a>
+                    <a href="privacy.md">Политика конфиденциальности</a>
+                    <a href="consent.md">Согласие на обработку данных</a>
+                    <a href="terms.md">Условия оплаты и возврата</a>
+                </div>
+                <div class="footer-contacts">
+                    <a href="mailto:mudro.is@yandex.ru"><i class="fas fa-envelope"></i> mudro.is@yandex.ru</a>
+                    <a href="tel:+79002846600"><i class="fas fa-phone"></i> +7 (900) 284-66-00</a>
+                    <a href="https://vk.com/interactive.school.mudro" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+                    <a href="https://max.ru/id236507001744_biz" target="_blank"><i class="fas fa-comment-dots"></i> MAX</a>
+                    <a href="https://интерактивнаяшкола.рф" target="_blank"><i class="fas fa-globe"></i> интерактивнаяшкола.рф</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2018-2026 ИП Громова Анна Александровна, ОГРНИП: 319237500156762, ИНН: 236507001744</p>
+            <p class="footer-inn">Интерактивная школа МУДРО. Все права защищены. Код защищен лицензией.</p>
+        </div>
+    </footer>
+
+    <!-- ==================== AUTH MODAL ==================== -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal">
+            <button class="auth-close" onclick="Auth.hideAuthModal()">&times;</button>
+            <h2>Вход в курс</h2>
+            <p>Введите email и пароль для доступа к урокам</p>
+            <form id="authForm" onsubmit="return Auth.handleLogin(event)">
+                <input type="email" id="authEmailInput" placeholder="email@example.com" autocomplete="email" autofocus>
+                <input type="password" id="authPassInput" placeholder="Пароль" autocomplete="current-password">
+                <button type="submit" class="btn-primary" id="authSubmitBtn">Войти</button>
+            </form>
+            <div class="auth-error" id="authError"></div>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+    <script src="js/firebase-config.js" defer></script>
+    <script src="js/firestore.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/particles.js" defer></script>
+    <script src="js/terminal.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+</html>

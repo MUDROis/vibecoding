@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уроки курса — Вайб-кодинг</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vibecoding">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .lesson-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 24px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+        .lesson-card .completed-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0,255,136,0.15);
+            color: #00ff88;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            pointer-events: none;
+        }
+        .lesson-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            border-color: rgba(0,255,136,0.3);
+        }
+        .lesson-card.locked {
+            opacity: 0.5;
+            cursor: default;
+            pointer-events: none;
+        }
+        .lesson-card.locked:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: rgba(255,255,255,0.08);
+        }
+        .lesson-card .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+        .lesson-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            margin: 8px 0;
+        }
+        .lesson-card p {
+            color: #b0c4d8;
+            font-size: 0.95rem;
+        }
+        .lesson-card .status {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            background: rgba(0,255,136,0.15);
+            color: #00ff88;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+        .lesson-card .status.locked {
+            background: rgba(255,255,255,0.05);
+            color: #6a7b8e;
+        }
+        .page-title {
+            padding-top: 120px;
+        }
+        .course-header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #00ccff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .admin-link:hover {
+            border-color: #00ccff;
+            background: rgba(0, 204, 255, 0.1);
+        }
+        .auth-user-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(232, 237, 243, 0.6);
+            font-size: 0.85rem;
+        }
+        .auth-user-bar .auth-logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e8edf3;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .auth-user-bar .auth-logout-btn:hover {
+            border-color: #ff5252;
+            color: #ff5252;
+        }
+        @media (max-width: 768px) {
+            .page-title {
+                padding-top: 90px;
+            }
+            .page-title h1 {
+                font-size: 1.7rem;
+            }
+            .lessons-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 24px;
+            }
+            .lesson-card {
+                padding: 18px;
+            }
+            .lesson-card .number {
+                font-size: 2rem;
+            }
+            .lesson-card h3 {
+                font-size: 1.1rem;
+            }
+            .lesson-card p {
+                font-size: 0.85rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-title {
+                padding-top: 70px;
+            }
+            .page-title h1 {
+                font-size: 1.4rem;
+            }
+            .lessons-grid {
+                gap: 12px;
+                margin-top: 16px;
+            }
+            .lesson-card {
+                padding: 14px;
+                border-radius: 14px;
+            }
+            .lesson-card .number {
+                font-size: 1.6rem;
+                margin-bottom: 4px;
+            }
+            .lesson-card h3 {
+                font-size: 1rem;
+                margin: 4px 0;
+            }
+            .lesson-card p {
+                font-size: 0.8rem;
+            }
+            .lesson-card .status {
+                font-size: 0.7rem;
+                padding: 3px 10px;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo" style="height:32px; vertical-align:middle; margin-right:8px;" /> <i class="fas fa-code"></i> <span class="logo-text">Vibecoding</span>
+            </a>
+            <nav id="mainNav">
+                <a href="index.html#benefits">О курсе</a>
+                <a href="index.html#program">Программа</a>
+                <a href="course.html">Уроки</a>
+                <a href="index.html#author">Об авторе</a>
+                <a href="index.html#faq">FAQ</a>
+                <span class="auth-user-bar" id="authUserBar" style="display:none;"></span>
+            </nav>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-title">
+        <div class="container">
+            <h1 class="section-title">Все уроки курса</h1>
+            <div class="course-header-actions">
+                <p class="section-subtitle">Выберите урок, чтобы перейти к его материалам.</p>
+                <a href="admin.html" class="admin-link" id="adminLink" style="display:none;">
+                    <i class="fas fa-cog"></i> Управление кодами
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding-bottom: 80px;">
+        <div class="container">
+            <div class="lessons-grid" id="lessonsGrid">
+                <!-- Cards are rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-col">
+                <div class="footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="index.html#program">Программа</a>
+                    <a href="course.html">Уроки</a>
+                    <a href="wiki.html">Вики курса</a>
+                    <a href="index.html#author">Об авторе</a>
+                    <a href="privacy.md">Политика конфиденциальности</a>
+                    <a href="consent.md">Согласие на обработку данных</a>
+                    <a href="terms.md">Условия оплаты и возврата</a>
+                </div>
+                <div class="footer-contacts">
+                    <a href="mailto:mudro.is@yandex.ru"><i class="fas fa-envelope"></i> mudro.is@yandex.ru</a>
+                    <a href="tel:+79002846600"><i class="fas fa-phone"></i> +7 (900) 284-66-00</a>
+                    <a href="https://vk.com/interactive.school.mudro" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+                    <a href="https://max.ru/u/f9LHodD0cOJjEVHC7pYXNBOdKHR3FKIfz_2mczGZ86Ohl3dXvjd8VW6opXQ" target="_blank"><i class="fas fa-comment-dots"></i> MAX</a>
+                    <a href="https://интерактивнаяшкола.рф" target="_blank"><i class="fas fa-globe"></i> интерактивнаяшкола.рф</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2026 ИП Громова Анна Александровна, Интерактивная школа МУДРО.</p>
+            <p class="footer-inn">ОГРНИП: 319237500156762 &nbsp; ИНН: 236507001744</p>
+        </div>
+    </footer>
+
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal">
+            <button class="auth-close" onclick="Auth.hideAuthModal()">&times;</button>
+            <h2>Вход в курс</h2>
+            <p>Введите email и пароль для доступа к урокам</p>
+            <form id="authForm" onsubmit="return Auth.handleLogin(event)">
+                <input type="email" id="authEmailInput" placeholder="email@example.com" autocomplete="email" autofocus>
+                <input type="password" id="authPassInput" placeholder="Пароль" autocomplete="current-password">
+                <button type="submit" class="btn-primary" id="authSubmitBtn">Войти</button>
+            </form>
+            <div class="auth-error" id="authError"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+    <script src="js/firebase-config.js" defer></script>
+    <script src="js/firestore.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script>
+    (() => {
+        const LESSONS = [
+            { id: 1, num: '01', title: 'Что такое вайбкодинг и как он меняет создание сайтов', desc: 'Регистрация GitHub, установка VS Code, первый промпт в DeepSeek, публикация на GitHub Pages.', file: 'lesson1.html' },
+            { id: 2, num: '02', title: 'Инструменты AI-разработчика: выбираем и настраиваем', desc: 'Установка Mimo и Giga Code, сравнение нейросетей, создание трекера задач.', file: 'lesson2.html' },
+            { id: 3, num: '03', title: 'Первый лендинг для школы', desc: 'Структура, контент, цветовая схема, адаптивность, публикация.', file: 'lesson3.html' },
+            { id: 4, num: '04', title: 'Базы данных без программирования — Supabase', desc: 'Регистрация, создание таблиц, отправка данных, уведомления.', file: 'lesson4.html' },
+            { id: 5, num: '05', title: 'Git — контроль версий и резервное копирование', desc: 'Ветки, Pull Request, автоматический бэкап через GitHub Actions.', file: 'lesson5.html' },
+            { id: 6, num: '06', title: 'Автоматизация с GitHub Actions', desc: 'Деплой, проверка ссылок, уведомления в Telegram.', file: 'lesson6.html' },
+            { id: 7, num: '07', title: 'Тестирование и отладка', desc: 'Lighthouse, исправление ошибок, A/B тестирование.', file: 'lesson7.html' },
+            { id: 8, num: '08', title: 'SEO и продвижение', desc: 'Мета-теги, Open Graph, sitemap, индексация.', file: 'lesson8.html' },
+            { id: 9, num: '09', title: 'Безопасность и финальная презентация', desc: 'SSL, капча, политика конфиденциальности, запуск.', file: 'lesson9.html' }
+        ];
+
+        function checkAuthAndRender() {
+            Auth.whenReady().then(() => {
+                const user = Auth.getCurrentUser();
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const userData = Auth.getUserData();
+                const adminLink = document.getElementById('adminLink');
+                if (adminLink && userData && userData.role === 'admin') {
+                    adminLink.style.display = 'inline-flex';
+                }
+
+                const authBar = document.getElementById('authUserBar');
+                if (authBar) {
+                    authBar.style.display = 'flex';
+                    authBar.innerHTML = '<span>' + (user.email || '') + '</span><button class="auth-logout-btn" onclick="Auth.handleLogout()">Выйти</button>';
+                }
+
+                const grid = document.getElementById('lessonsGrid');
+                grid.innerHTML = '';
+
+                LESSONS.forEach(lesson => {
+                    Auth.canAccessLesson(lesson.id).then(accessible => {
+                        if (accessible) {
+                            const a = document.createElement('a');
+                            a.href = lesson.file;
+                            a.className = 'lesson-card';
+                            let badge = '';
+                            FirestoreDB.getProgress(user.uid, 'lesson' + lesson.id).then(progress => {
+                                if (progress && progress.score === 100) {
+                                    badge = '<span class="completed-badge"><i class="fas fa-check-circle"></i></span>';
+                                }
+                                a.innerHTML = badge + '<div class="number">' + lesson.num + '</div><h3>' + lesson.title + '</h3><p>' + lesson.desc + '</p><span class="status">Доступно</span>';
+                                grid.appendChild(a);
+                            }).catch(() => {
+                                a.innerHTML = '<div class="number">' + lesson.num + '</div><h3>' + lesson.title + '</h3><p>' + lesson.desc + '</p><span class="status">Доступно</span>';
+                                grid.appendChild(a);
+                            });
+                        } else {
+                            const div = document.createElement('div');
+                            div.className = 'lesson-card locked';
+                            div.innerHTML = '<div class="number">' + lesson.num + '</div><h3>' + lesson.title + '</h3><p>' + lesson.desc + '</p><span class="status locked">Нет доступа</span>';
+                            grid.appendChild(div);
+                        }
+                    });
+                });
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkAuthAndRender);
+        } else {
+            checkAuthAndRender();
+        }
+    })();
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+</html>
