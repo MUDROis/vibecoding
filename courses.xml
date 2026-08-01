@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="2026-08-01">
+<shop>
+    <name>Курс Вайбкодинг — Интерактивная школа МУДРО</name>
+    <company>ИП Громова Анна Александровна</company>
+    <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
+    <email>mudro.is@yandex.ru</email>
+    <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
+    <currencies>
+        <currency id="RUR" rate="1"/>
+    </currencies>
+    <!-- Фид для Яндекс.Вебмастер → Фиды → Образование. Упор на онлайн-обучение: доступ из любой точки России и СНГ. -->
+    <offers>
+
+        <!-- 1. Полный курс (онлайн) -->
+        <offer id="vibecoding-full" available="true">
+            <name>Вайбкодинг — полный онлайн-курс по созданию сайтов с AI</name>
+            <description>Онлайн-курс по вайбкодингу для начинающих: создание сайтов с помощью нейросетей без кода за 3 недели. 9 практических уроков, 3 готовых проекта, доступ на 1 год. Дистанционное обучение из любой точки России и СНГ.</description>
+            <price>9000</price>
+            <currencyId>RUR</currencyId>
+            <categoryId>101</categoryId>
+            <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
+            <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
+            <param name="продолжительность" unit="неделя">3</param>
+            <param name="количество_уроков" unit="урок">9</param>
+            <param name="форма_обучения">онлайн</param>
+            <param name="тип_занятий">вебинары + записи в личном кабинете</param>
+            <param name="доступ" unit="месяц">12</param>
+            <param name="география_обучения">вся Россия и страны СНГ</param>
+            <param name="План" unit="Неделя 1: Знакомство и первый продукт" hours="6" order="1">Что такое вайбкодинг, настройка GitHub, VS Code, создание первой страницы.</param>
+            <param name="План" unit="Неделя 2: Данные и автоматизация" hours="6" order="2">Firebase, Git, GitHub Actions — базы данных и автоматизация.</param>
+            <param name="План" unit="Неделя 3: Завершение, безопасность и запуск" hours="6" order="3">Тестирование, SEO, безопасность, финальный проект и презентация.</param>
+        </offer>
+
+        <!-- 2. Поурочный доступ (онлайн) -->
+        <offer id="vibecoding-lesson" available="true">
+            <name>Вайбкодинг — поурочный доступ (онлайн)</name>
+            <description>Онлайн-обучение вайбкодингу: оплата за 1 урок курса. Доступ к уроку на 3 месяца. Дистанционно из любой точки России и СНГ.</description>
+            <price>1500</price>
+            <currencyId>RUR</currencyId>
+            <categoryId>101</categoryId>
+            <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
+            <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
+            <param name="продолжительность" unit="урок">1</param>
+            <param name="форма_обучения">онлайн</param>
+            <param name="тип_занятий">записи в личном кабинете</param>
+            <param name="доступ" unit="месяц">3</param>
+            <param name="география_обучения">вся Россия и страны СНГ</param>
+            <param name="План" unit="Один урок из курса" hours="2" order="1">Любой урок из 9: от первого сайта до запуска готового продукта.</param>
+        </offer>
+
+        <!-- 3. Бонусный модуль ПРОФИ (онлайн) -->
+        <offer id="vibecoding-pro" available="true">
+            <name>Вайбкодинг — бонусный модуль ПРОФИ (онлайн)</name>
+            <description>Онлайн-модуль уровня ПРОФИ для выпускников курса: превращение сайта в мобильное приложение (PWA), Telegram-бот для уведомлений, приём платежей, Docker, монетизация проектов. Дистанционно из любой точки России и СНГ.</description>
+            <price>5000</price>
+            <currencyId>RUR</currencyId>
+            <categoryId>101</categoryId>
+            <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
+            <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
+            <param name="продолжительность" unit="модуль">1</param>
+            <param name="форма_обучения">онлайн</param>
+            <param name="тип_занятий">вебинары + записи в личном кабинете</param>
+            <param name="география_обучения">вся Россия и страны СНГ</param>
+            <param name="План" unit="Модуль 1: Профи-инструменты" hours="8" order="1">PWA, Telegram-бот, приём платежей, Docker и монетизация своих проектов.</param>
+        </offer>
+
+    </offers>
+</shop>
+</yml_catalog>

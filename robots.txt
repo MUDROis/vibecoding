@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /sw.js
+Disallow: /manifest.json
+
+Sitemap: https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/sitemap.xml
+
+# Яндекс
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+# Google
+User-agent: Googlebot
+Allow: /
