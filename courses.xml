@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<yml_catalog date="2026-08-01">
+<yml_catalog date="2026-08-08">
 <shop>
-    <name>Курс Вайбкодинг — Интерактивная школа МУДРО</name>
+    <name>Интерактивная школа МУДРО</name>
     <company>ИП Громова Анна Александровна</company>
     <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
     <email>mudro.is@yandex.ru</email>
@@ -21,7 +21,7 @@
             <categoryId>101</categoryId>
             <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
             <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
-            <param name="продолжительность" unit="неделя">3</param>
+            <param name="продолжительность" unit="день">21</param>
             <param name="количество_уроков" unit="урок">9</param>
             <param name="форма_обучения">онлайн</param>
             <param name="тип_занятий">вебинары + записи в личном кабинете</param>
@@ -41,7 +41,7 @@
             <categoryId>101</categoryId>
             <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
             <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
-            <param name="продолжительность" unit="урок">1</param>
+            <param name="продолжительность" unit="час">2</param>
             <param name="форма_обучения">онлайн</param>
             <param name="тип_занятий">записи в личном кабинете</param>
             <param name="доступ" unit="месяц">3</param>
@@ -58,7 +58,7 @@
             <categoryId>101</categoryId>
             <url>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/</url>
             <picture>https://xn--80acbgeyej3ah.xn--80aaagnrcpdkofpu2ae0iuf.xn--p1ai/logo.png</picture>
-            <param name="продолжительность" unit="модуль">1</param>
+            <param name="продолжительность" unit="час">8</param>
             <param name="форма_обучения">онлайн</param>
             <param name="тип_занятий">вебинары + записи в личном кабинете</param>
             <param name="география_обучения">вся Россия и страны СНГ</param>
